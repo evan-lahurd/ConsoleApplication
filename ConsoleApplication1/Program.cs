@@ -44,8 +44,9 @@ namespace ConsoleApplication1 {
                 // define copy of i inside loop to prevent WriteLine() from printing final value of i for each Thread
                 int threadNum = i;
                 Thread thread = new Thread(() => {
-                    Console.WriteLine("Complex operation {0} starting...", threadNum);
-                    Thread.Sleep(rand.Next(1000, 5000));
+                    int operationTime = rand.Next(1000, 5000);
+                    Console.WriteLine("Complex operation {0} starting...operation should take {1} seconds", threadNum, operationTime/1000.0);
+                    Thread.Sleep(operationTime);
                     Console.WriteLine("Complex operation {0} complete!", threadNum);
                 });
                 threads[i] = thread;
@@ -62,8 +63,9 @@ namespace ConsoleApplication1 {
                 // define copy of i inside loop to prevent WriteLine() from printing final value of i for each Task
                 int taskNum = i;
                 Task task = new Task(() => {
-                    Console.WriteLine("Complex operation {0} starting...", taskNum);
-                    Thread.Sleep(rand.Next(1000, 5000));
+                    int operationTime = rand.Next(1000, 5000);
+                    Console.WriteLine("Complex operation {0} starting...operation should take {1} seconds", taskNum, operationTime/1000.0);
+                    Thread.Sleep(operationTime);
                     Console.WriteLine("Complex operation {0} complete!", taskNum);
                 });
                 tasks[i] = task;
