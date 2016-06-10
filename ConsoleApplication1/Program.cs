@@ -20,12 +20,38 @@ namespace ConsoleApplication1 {
 
             Console.WriteLine(MyMath.AddNumbers(5, 8));
 
+            // start the print Threads
+            Thread[] threads = spawnPrintThreads();
+            // wait for all of the print Threads to complete
+            foreach (Thread thread in threads) {
+                thread.Join();
+            }
+            Console.WriteLine("All complex operations have been completed in Threads!\n");
+
+            // start the print Tasks
             Task[] tasks = spawnPrintTasks();
-
+            // wait for all of the print Tasks to complete
             Task.WaitAll(tasks);
+            Console.WriteLine("All complex operations have been completed in Tasks!");
 
-            Console.WriteLine("All complex operations have been completed!");
+        }
 
+        private static Thread[] spawnPrintThreads() {
+            int numThreads = 5;
+            Random rand = new Random();
+            Thread[] threads = new Thread[numThreads];
+            for (int i = 0; i < numThreads; i++) {
+                // define copy of i inside loop to prevent WriteLine() from printing final value of i for each Thread
+                int threadNum = i;
+                Thread thread = new Thread(() => {
+                    Console.WriteLine("Complex operation {0} starting...", threadNum);
+                    Thread.Sleep(rand.Next(1000, 5000));
+                    Console.WriteLine("Complex operation {0} complete!", threadNum);
+                });
+                threads[i] = thread;
+                thread.Start();
+            }
+            return threads;
         }
 
         private static Task[] spawnPrintTasks() {
@@ -34,11 +60,11 @@ namespace ConsoleApplication1 {
             Task[] tasks = new Task[numTasks];
             for (int i = 0; i < numTasks; i++) {
                 // define copy of i inside loop to prevent WriteLine() from printing final value of i for each Task
-                int threadNum = i;
+                int taskNum = i;
                 Task task = new Task(() => {
-                    Console.WriteLine("Complex operation {0} starting...", threadNum);
+                    Console.WriteLine("Complex operation {0} starting...", taskNum);
                     Thread.Sleep(rand.Next(1000, 5000));
-                    Console.WriteLine("Complex operation {0} complete!", threadNum);
+                    Console.WriteLine("Complex operation {0} complete!", taskNum);
                 });
                 tasks[i] = task;
                 task.Start();
@@ -81,7 +107,7 @@ namespace ConsoleApplication1 {
                     builder.Append(",");
                 }
             }
-            Console.WriteLine(builder.ToString() + "\n");
+            Console.WriteLine(builder.ToString());
         }
     }
 }
