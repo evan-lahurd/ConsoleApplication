@@ -24,6 +24,18 @@ namespace ConsoleApplication1
                 Console.Write(i);
             }
             Console.WriteLine();
+
+            StringBuilder builder = new StringBuilder();
+            int appendLength = 10;
+            for (int i = 0; i < appendLength; i++)
+            {
+                builder.Append(i);
+                if (i < (appendLength - 1))
+                {
+                    builder.Append(",");
+                }
+            }
+            Console.WriteLine(builder.ToString() + "\n");
         }
     }
 }
