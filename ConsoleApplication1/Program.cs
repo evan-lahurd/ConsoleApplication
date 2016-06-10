@@ -55,6 +55,7 @@ namespace ConsoleApplication1 {
             return threads;
         }
 
+        // Prefer starting Tasks in thread pool in modern C# code
         private static Task[] spawnPrintTasks() {
             int numTasks = 5;
             Random rand = new Random();
@@ -62,14 +63,13 @@ namespace ConsoleApplication1 {
             for (int i = 0; i < numTasks; i++) {
                 // define copy of i inside loop to prevent WriteLine() from printing final value of i for each Task
                 int taskNum = i;
-                Task task = new Task(() => {
+                Task task = Task.Factory.StartNew(() => {
                     int operationTime = rand.Next(1000, 5000);
                     Console.WriteLine("Complex operation {0} starting...operation should take {1} seconds", taskNum, operationTime/1000.0);
                     Thread.Sleep(operationTime);
                     Console.WriteLine("Complex operation {0} complete!", taskNum);
                 });
                 tasks[i] = task;
-                task.Start();
             }
             return tasks;
         }
